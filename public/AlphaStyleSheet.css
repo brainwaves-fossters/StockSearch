@@ -1,0 +1,29 @@
+body,jumbotron {
+        background-image: url("http://cs-server.usc.edu:45678/hw/hw8/images/background.png");
+}
+
+.mainContainer{
+	width: 80%;
+	margin: auto;
+}
+
+.stockFormStyle{
+	text-align: center;
+	background-color: white;
+}
+
+.redBorder{
+	border: solid 1.5px red;
+}
+
+.button {
+    background-color: blue;
+    color: white;
+    border: solid 1px #c31e41;
+    border-radius: 4px;
+    box-shadow: inset 0px 1px 4px 0px white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}

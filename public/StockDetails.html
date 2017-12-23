@@ -1,0 +1,154 @@
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+        appId: '130454030975892',
+        cookie: true,
+        xfbml: true,
+        version: 'v2.11'
+    });
+
+    FB.AppEvents.logPageView();
+
+};
+
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return; }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+<!--<script src="//connect.facebook.net/pl_PL/all.js" ></script>-->
+<script src="https://connect.facebook.net/en_US/sdk.js"></script>
+<script src="https://connect.facebook.net/pl_PL/all.js"></script>
+<div class="stockDetailsContainer">
+    <br>
+    <div class="stockDetailsStyle" style="overflow:hidden; height:100%; float: top">
+        <nav class="navbar navbar-default">
+            <div>
+                <div><b>Stock Details</b>
+                    <div ng-click="showFavoritesTab()">
+                        <button type="button" style="float: left" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-menu-left"></span>
+                            
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div style="background-color: white;">
+            <ul class="nav nav-pills">
+                <li class="active">
+                    <a href="stockDetails/#currentstock" data-toggle="tab">
+                        <span class="glyphicon glyphicon-dashboard"></span> Current Stock
+                    </a>
+                </li>
+                <li>
+                    <a href="stockDetails/#historicalChartsDiv" data-toggle="tab">
+                        <span class="glyphicon glyphicon-stats"></span> Historical Charts
+                    </a>
+                </li>
+                <li>
+                    <a href="stockDetails/#newsFeedDiv" ng-click="loadNewsFeedIfNotLoaded()" data-toggle="tab" onclick>
+                        <span class="glyphicon glyphicon-link"></span> News Feed
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="historicalChartsDiv" class="tab-pane fade">
+                    <div>
+                        <div id="historicalChartsContainer"></div>
+                    </div>
+                </div>
+                <div id="newsFeedDiv" class="tab-pane fade">
+                    <br>
+                    <div ng-repeat="news in newsFeedArray" class="well" style="text-align: left">
+                        <div ng-repeat="newsIterator in news">
+                            <a href="{{newsIterator.links}}" style="text-decoration: none;" target="_blank">{{newsIterator.links}}</a>
+                            {{newsIterator.title}}{{newsIterator.pubDate}} {{newsIterator.author}}
+                        </div>
+                    </div>
+                </div>
+                <div id="currentstock" class="tab-pane fade in active">
+                    <br>
+                    <div class="col-md-6">
+                        <!-- Stock Table -->
+                        <div>
+                            <div class="col-md-6" style="float: left"> <b>Stock Details</b> </div>
+                            <div class="col-md-6">
+                                <button ng-click="shareOnFaceBook()" type="button" class="btn btn-default btn-sm pull-right">
+                                    <a>
+                                        <img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" width="20" height="20">
+                                    </a>
+                                </button>
+                                <button ng-click="updateFavoritesList()" type="button" class="btn btn-default btn-sm pull-right">
+                                    <span ng-show="showNotFavorite" class="glyphicon glyphicon-star-empty"></span>
+                                    <span ng-show="!showNotFavorite" class="glyphicon glyphicon-star"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <br>
+                            <br>
+                            <table id="table" class="table table-striped" border-collapse: collapse;>
+                                <tr>
+                                    <td><b>Stock Ticker Symbol</b></td>
+                                    <td style="text-align:center;">{{stockTickerSymbol}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Last Price</b></td>
+                                    <td style="text-align:center">{{currentDayPriceClose}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Change (Change percent)</b></td>
+                                    <td style="text-align:center">{{stockChange}} ({{stockChangePercent}}%)
+                                        <img ng-src="{{stockArrow}}" style="width:20px;height:20px;">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Timestamp</b></td>
+                                    <td style="text-align:center">{{timeStamp}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Open</b></td>
+                                    <td style="text-align:center">{{currentDayOpen}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Previous Close</b></td>
+                                    <td style="text-align:center">{{previousDayClose}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Day's Range</b></td>
+                                    <td style="text-align:center">{{currentDayLow}}-{{currentDayHigh}}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Volume</b></td>
+                                    <td style="text-align:center">{{currentDayVolume}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="indicators" class="col-md-6">
+                        <!-- Indicator chart-->
+                        <ul class="nav nav-tabs">
+                            <li><a ng-click='loadPriceVolumeChart()' data-toggle="tab" href="stockDetails/#indicatorContainer">Price</a></li>
+                            <li><a ng-click="loadSMAChart()" data-toggle="tab" ng-href="stockDetails/#indicatorContainer">SMA</a></li>
+                            <li><a ng-click='loadEMAChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">EMA</a></li>
+                            <li><a ng-click='loadSTOCHChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">STOCH</a></li>
+                            <li><a ng-click='loadRSIChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">RSI</a></li>
+                            <li><a ng-click='loadADXChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">ADX</a></li>
+                            <li><a ng-click='loadCCIChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">CCI</a></li>
+                            <li><a ng-click='loadBBANDSChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">BBANDS</a></li>
+                            <li><a ng-click='loadMACDChart()' data-toggle="tab" ng-href="stockDetails/#indicatorContainer">MACD</a></li>
+                        </ul>
+                        <div id="indicatorContainer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

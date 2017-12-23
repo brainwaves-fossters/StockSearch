@@ -1,0 +1,20 @@
+.stockDetailsContainer{
+	text-align: center;
+	background-color: white;
+}
+
+.stockDetailsStyle{
+	width: 95%;
+	margin: auto;
+	border: 1px solid black;
+
+}
+
+.stockLabel{
+	background-color: #eff0f1;
+	font-size: 16px;
+}
+
+.glyphicon-star {
+   color: yellow;
+}
